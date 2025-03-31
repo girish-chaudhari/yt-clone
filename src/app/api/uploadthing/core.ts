@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { eq, and } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
+import { UploadThingError, UTApi } from "uploadthing/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
 
 import { db } from "@/db";
 import { users, videos } from "@/db/schema";
@@ -16,9 +16,11 @@ export const ourFileRouter = {
       maxFileCount: 1,
     },
   })
-  .input(z.object({
-    videoId: z.string().uuid()
-  }))
+    .input(
+      z.object({
+        videoId: z.string().uuid(),
+      })
+    )
     .middleware(async ({ input }) => {
       const { userId: clerkUserId } = await auth();
 
@@ -27,27 +29,59 @@ export const ourFileRouter = {
       const [user] = await db
         .select()
         .from(users)
+        .where(eq(users.clerkId, clerkUserId));
+
+      if (!user) throw new UploadThingError("Unauthorized");
+
+      const [existingVideo] = await db
+        .select({
+          thumbnailKey: videos.thumbnailKey,
+        })
+        .from(videos)
         .where(
-            eq(users.clerkId, clerkUserId),
+          and(
+            eq(videos.id, input.videoId),
+            eq(videos.userId, user.id) // Ensure the user owns the video
+          )
         );
 
-        if(!user) throw new UploadThingError("Unauthorized");
+      if (!existingVideo) {
+        throw new UploadThingError("Not found");
+      }
+
+      if (existingVideo.thumbnailKey) {
+        const utapi = new UTApi();
+
+        await utapi.deleteFiles(existingVideo.thumbnailKey);
+        await db
+          .update(videos)
+          .set({
+            thumbnailKey: null,
+            thumbnailUrl: null,
+          })
+          .where(
+            and(
+              eq(videos.id, input.videoId),
+              eq(videos.userId, user.id) // Ensure the user owns the video
+            )
+          );
+      }
 
       return { user, ...input };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       await db
-      .update(videos)
-      .set({
-        thumbnailUrl: file.url
-      })
-      .where(
-        and(
-          eq(videos.id, metadata.videoId),
-          eq(videos.userId, metadata.user.id) // Ensure the user owns the video
-        )
-      );
-
+        .update(videos)
+        .set({
+          thumbnailUrl: file.url,
+          thumbnailKey: file.key,
+        })
+        .where(
+          and(
+            eq(videos.id, metadata.videoId),
+            eq(videos.userId, metadata.user.id) // Ensure the user owns the video
+          )
+        );
 
       return { uploadedBy: metadata.user.id };
     }),

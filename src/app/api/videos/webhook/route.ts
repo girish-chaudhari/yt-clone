@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
+import { UTApi } from "uploadthing/server";
 import {
   VideoAssetCreatedWebhookEvent,
   VideoAssetErroredWebhookEvent,
@@ -52,7 +53,7 @@ export const POST = async (request: Request) => {
         return new Response("No upload ID found", { status: 400 });
       }
 
-      console.log("creating video: ", {uploadId: data.upload_id})
+      console.log("creating video: ", { uploadId: data.upload_id });
 
       await db
         .update(videos)
@@ -75,10 +76,22 @@ export const POST = async (request: Request) => {
         return new Response("Missing playback ID", { status: 400 });
       }
 
-      const thumbnailUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`;
-      const previewUrl = `https://image.mux.com/${playbackId}/animated.gif`;
-
+      const tempThumbnailUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`;
+      const tempPreviewUrl = `https://image.mux.com/${playbackId}/animated.gif`;
       const duration = data.duration ? Math.round(data.duration * 1000) : 0;
+
+      const utapi = new UTApi();
+      const [uploadedThumbnail, uplaodedPreview] =
+        await utapi.uploadFilesFromUrl([tempThumbnailUrl, tempPreviewUrl]);
+
+      if (!uploadedThumbnail.data || !uplaodedPreview.data) {
+        return new Response("Failed to upload thumbnail or preview", {
+          status: 500,
+        });
+      }
+
+      const { key: thumbnailKey, url: thumbnailUrl } = uploadedThumbnail.data;
+      const { key: previewKey, url: previewUrl } = uplaodedPreview.data;
 
       await db
         .update(videos)
@@ -87,7 +100,9 @@ export const POST = async (request: Request) => {
           muxPlaybackId: playbackId,
           muxAssetId: data.id,
           thumbnailUrl,
+          thumbnailKey,
           previewUrl,
+          previewKey,
           duration,
         })
         .where(eq(videos.muxUploadId, data.upload_id));
@@ -115,7 +130,7 @@ export const POST = async (request: Request) => {
         return new Response("Missing upload ID", { status: 400 });
       }
 
-      console.log("deleting video: ", {uploadId: data.upload_id})
+      console.log("deleting video: ", { uploadId: data.upload_id });
 
       await db.delete(videos).where(eq(videos.muxUploadId, data.upload_id));
       break;
@@ -126,24 +141,24 @@ export const POST = async (request: Request) => {
         asset_id: string;
       };
 
-      console.log("Track ready")
+      console.log("Track ready");
 
       // Typescript incorrectly says that asset_id does not exist
       const assetId = data.asset_id;
-      const trackId = data.id
-      const status = data.status
+      const trackId = data.id;
+      const status = data.status;
 
       if (!assetId) {
         return new Response("Missing upload ID", { status: 400 });
       }
 
       await db
-      .update(videos)
-      .set({
-        muxTrackId: trackId,
-        muxTrackStatus: status
-      })
-      .where(eq(videos.muxAssetId, assetId));
+        .update(videos)
+        .set({
+          muxTrackId: trackId,
+          muxTrackStatus: status,
+        })
+        .where(eq(videos.muxAssetId, assetId));
 
       break;
     }
