@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { mux } from "@/lib/mux";
 import { TRPCError } from "@trpc/server";
 import { workflow } from "@/lib/qstash";
-import { users, videos, VideoUpdateSchema } from "@/db/schema";
+import { users, videos, VideoUpdateSchema, videoViews } from "@/db/schema";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -19,15 +19,16 @@ export const videosRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const [existingVideo] = await db
         .select({
-         ...getTableColumns(videos), 
-         user: {
-          ...getTableColumns(users)
-         }
+          ...getTableColumns(videos),
+          user: {
+            ...getTableColumns(users),
+          },
+          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
         })
         .from(videos)
         .innerJoin(users, eq(videos.userId, users.id))
-        .where(eq(videos.id, input.id))
-        
+        .where(eq(videos.id, input.id));
+
       if (!existingVideo) {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
