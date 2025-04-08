@@ -1,0 +1,20 @@
+# Ignore root config and lock files
+package.json
+bun.lockb
+pnpm-lock.yaml
+yarn.lock
+tsconfig.json
+.next
+.vercel
+
+# Ignore Next.js build folders
+out
+build
+dist
+
+# Ignore old ShadCN UI components (example path)
+src/components/
+
+# Optional: ignore env files
+.env
+.env.*

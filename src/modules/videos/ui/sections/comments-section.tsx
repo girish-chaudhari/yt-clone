@@ -1,3 +1,3 @@
-export const CommentsSection = ( )=> {
-  return <div>Comments</div>
-}
+export const CommentsSection = () => {
+  return <div>Comments</div>;
+};

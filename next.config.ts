@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "utfs.io"
-      }
-    ]
-  }
+        hostname: "utfs.io",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

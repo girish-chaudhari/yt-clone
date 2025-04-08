@@ -94,7 +94,7 @@ export const VideoSectionSuspense = () => {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
+    },
   );
 
   return (
@@ -161,8 +161,12 @@ export const VideoSectionSuspense = () => {
                       {format(new Date(video.createdAt), "d MMM yyyy")}
                     </TableCell>
                     <TableCell className="text-right text-sm">views</TableCell>
-                    <TableCell className="text-right text-sm">comments</TableCell>
-                    <TableCell className="text-right text-sm pr-6">likes</TableCell>
+                    <TableCell className="text-right text-sm">
+                      comments
+                    </TableCell>
+                    <TableCell className="text-right text-sm pr-6">
+                      likes
+                    </TableCell>
                   </TableRow>
                 </Link>
               ))}

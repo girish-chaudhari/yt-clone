@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import { useClerk, useAuth } from "@clerk/nextjs";
-import {
-  HistoryIcon, ListVideoIcon, ThumbsUpIcon
-} from "lucide-react";
+import { HistoryIcon, ListVideoIcon, ThumbsUpIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -56,7 +54,7 @@ export const PersonalSection = () => {
                     e.preventDefault();
                     return clerk.openSignIn();
                   }
-                }} 
+                }}
               >
                 <Link href={item.url} className="flex items-center gap-4">
                   <item.icon />

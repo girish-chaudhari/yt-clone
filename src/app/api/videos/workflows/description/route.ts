@@ -66,25 +66,23 @@ export const { POST } = serve(async (context) => {
     },
   });
 
-  
   const description = body.choices?.[0]?.message.content;
 
-  if(!description) {
-    throw new Error("Bad request")
+  if (!description) {
+    throw new Error("Bad request");
   }
 
   await context.run("update-video", async () => {
-
     await db
       .update(videos)
       .set({
         description: description || video.description,
-      }) 
+      })
       .where(
         and(
           eq(videos.id, video.id),
-          eq(videos.userId, video.userId) // Ensure the user owns the video
-        )
+          eq(videos.userId, video.userId), // Ensure the user owns the video
+        ),
       );
   });
 });

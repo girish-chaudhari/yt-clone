@@ -11,7 +11,7 @@ export const appRouter = createTRPCRouter({
   categories: categoriesRouter,
   videos: videosRouter,
   videoViews: videoViewsRouter,
-  videoReactions: videoReactionsRouter
+  videoReactions: videoReactionsRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

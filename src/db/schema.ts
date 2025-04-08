@@ -27,13 +27,13 @@ export const users = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("clerck_id_idx").on(t.clerkId)]
+  (t) => [uniqueIndex("clerck_id_idx").on(t.clerkId)],
 );
 
 export const userRelations = relations(users, ({ many }) => ({
   videos: many(videos),
   videoViews: many(videoViews),
-  videoReactions: many(videoReactions)
+  videoReactions: many(videoReactions),
 }));
 
 export const categories = pgTable(
@@ -45,7 +45,7 @@ export const categories = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("name_idx").on(t.name)]
+  (t) => [uniqueIndex("name_idx").on(t.name)],
 );
 
 export const categoryRelations = relations(users, ({ many }) => ({
@@ -99,7 +99,7 @@ export const videoRelations = relations(videos, ({ one, many }) => ({
     references: [categories.id],
   }),
   views: many(videoViews),
-  reactions: many(videoReactions)
+  reactions: many(videoReactions),
 }));
 
 export const videoViews = pgTable(
@@ -119,7 +119,7 @@ export const videoViews = pgTable(
       name: "video_views_pk",
       columns: [t.userId, t.videoId],
     }),
-  ]
+  ],
 );
 
 export const videoViewRelations = relations(videoViews, ({ one }) => ({
@@ -157,7 +157,7 @@ export const videoReactions = pgTable(
       name: "video_reactions_pk",
       columns: [t.userId, t.videoId],
     }),
-  ]
+  ],
 );
 
 export const videoReactionRelations = relations(videoReactions, ({ one }) => ({

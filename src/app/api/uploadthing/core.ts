@@ -19,7 +19,7 @@ export const ourFileRouter = {
     .input(
       z.object({
         videoId: z.string().uuid(),
-      })
+      }),
     )
     .middleware(async ({ input }) => {
       const { userId: clerkUserId } = await auth();
@@ -41,8 +41,8 @@ export const ourFileRouter = {
         .where(
           and(
             eq(videos.id, input.videoId),
-            eq(videos.userId, user.id) // Ensure the user owns the video
-          )
+            eq(videos.userId, user.id), // Ensure the user owns the video
+          ),
         );
 
       if (!existingVideo) {
@@ -62,8 +62,8 @@ export const ourFileRouter = {
           .where(
             and(
               eq(videos.id, input.videoId),
-              eq(videos.userId, user.id) // Ensure the user owns the video
-            )
+              eq(videos.userId, user.id), // Ensure the user owns the video
+            ),
           );
       }
 
@@ -79,8 +79,8 @@ export const ourFileRouter = {
         .where(
           and(
             eq(videos.id, metadata.videoId),
-            eq(videos.userId, metadata.user.id) // Ensure the user owns the video
-          )
+            eq(videos.userId, metadata.user.id), // Ensure the user owns the video
+          ),
         );
 
       return { uploadedBy: metadata.user.id };

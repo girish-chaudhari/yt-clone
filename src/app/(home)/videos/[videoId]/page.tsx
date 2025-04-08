@@ -13,9 +13,11 @@ const Page = async ({ params }: PageProps) => {
 
   void trpc.videos.getOne.prefetch({ id: videoId });
 
-  return <HydrateClient>
-    <VideoView videoId={videoId} />
-  </HydrateClient>;
+  return (
+    <HydrateClient>
+      <VideoView videoId={videoId} />
+    </HydrateClient>
+  );
 };
 
 export default Page;

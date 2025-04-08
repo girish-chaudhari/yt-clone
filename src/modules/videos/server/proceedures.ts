@@ -43,7 +43,7 @@ export const videosRouter = createTRPCRouter({
             type: videoReactions.type,
           })
           .from(videoReactions)
-          .where(inArray(videoReactions.userId, userId ? [userId] : []))
+          .where(inArray(videoReactions.userId, userId ? [userId] : [])),
       );
 
       const [existingVideo] = await db
@@ -58,23 +58,23 @@ export const videosRouter = createTRPCRouter({
             videoReactions,
             and(
               eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.type, "like")
-            )
+              eq(videoReactions.type, "like"),
+            ),
           ),
           dislikeCount: db.$count(
             videoReactions,
             and(
               eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.type, "dislike")
-            )
+              eq(videoReactions.type, "dislike"),
+            ),
           ),
           viewerReaction: viewerReactions.type,
         })
         .from(videos)
         .innerJoin(users, eq(videos.userId, users.id))
         .leftJoin(viewerReactions, eq(viewerReactions.videoId, videos.id))
-        .where(eq(videos.id, input.id))
-        // .groupBy(videos.id, users.id, viewerReactions.type);
+        .where(eq(videos.id, input.id));
+      // .groupBy(videos.id, users.id, viewerReactions.type);
 
       if (!existingVideo) {
         throw new TRPCError({ code: "NOT_FOUND" });
@@ -145,8 +145,8 @@ export const videosRouter = createTRPCRouter({
           .where(
             and(
               eq(videos.id, input.id),
-              eq(videos.userId, userId) // Ensure the user owns the video
-            )
+              eq(videos.userId, userId), // Ensure the user owns the video
+            ),
           );
       }
 
@@ -157,9 +157,8 @@ export const videosRouter = createTRPCRouter({
       const tempThumbnailUrl = `https://image.mux.com/${existingVideo.muxPlaybackId}/thumbnail.jpg`;
 
       const utapi = new UTApi();
-      const uploadedThumbnail = await utapi.uploadFilesFromUrl(
-        tempThumbnailUrl
-      );
+      const uploadedThumbnail =
+        await utapi.uploadFilesFromUrl(tempThumbnailUrl);
 
       if (!uploadedThumbnail.data) {
         throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });

@@ -16,15 +16,10 @@ export const studioRouter = createTRPCRouter({
       const [video] = await db
         .select()
         .from(videos)
-        .where(
-          and(
-            eq(videos.id, id),
-            eq(videos.userId, userId)
-          )
-        )
+        .where(and(eq(videos.id, id), eq(videos.userId, userId)));
 
       if (!video) {
-        throw new TRPCError({code: "NOT_FOUND"});
+        throw new TRPCError({ code: "NOT_FOUND" });
       }
       return video;
     }),
@@ -38,7 +33,7 @@ export const studioRouter = createTRPCRouter({
           })
           .nullish(),
         limit: z.number().min(1).max(100),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { cursor, limit } = input;
@@ -55,11 +50,11 @@ export const studioRouter = createTRPCRouter({
                   lt(videos.updatedAt, cursor.updatedAt),
                   and(
                     eq(videos.updatedAt, cursor.updatedAt),
-                    lt(videos.id, cursor.id)
-                  )
+                    lt(videos.id, cursor.id),
+                  ),
                 )
-              : undefined
-          )
+              : undefined,
+          ),
         )
         .orderBy(desc(videos.updatedAt), desc(videos.id))
         // Add 1 to the limit to check if there is a next page

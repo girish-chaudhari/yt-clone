@@ -17,7 +17,6 @@ const TITLE_SYSTEM_PROMPT = `Your task is to generate an SEO-focused title for a
 - Ensure the title is 3-8 words long and no more than 100 characters.
 - ONLY return the title as plain text. Do not add quotes or any additional formatting.`;
 
-
 export const { POST } = serve(async (context) => {
   const input = context.requestPayload as InputType;
   const { videoId, userId } = input;
@@ -68,15 +67,13 @@ export const { POST } = serve(async (context) => {
     },
   });
 
-  
   const title = body.choices?.[0]?.message.content;
 
-  if(!title) {
-    throw new Error("Bad request")
+  if (!title) {
+    throw new Error("Bad request");
   }
 
   await context.run("update-video", async () => {
-
     await db
       .update(videos)
       .set({
@@ -85,8 +82,8 @@ export const { POST } = serve(async (context) => {
       .where(
         and(
           eq(videos.id, video.id),
-          eq(videos.userId, video.userId) // Ensure the user owns the video
-        )
+          eq(videos.userId, video.userId), // Ensure the user owns the video
+        ),
       );
   });
 });

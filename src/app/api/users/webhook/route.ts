@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   if (!SIGNING_SECRET) {
     throw new Error(
-      "Error: Please add CLERK_SIGNING_SECRET from Clerk Dashboard to .env or .env"
+      "Error: Please add CLERK_SIGNING_SECRET from Clerk Dashboard to .env or .env",
     );
   }
 
@@ -75,13 +75,16 @@ export async function POST(req: Request) {
     await db.delete(users).where(eq(users.clerkId, data.id));
   }
 
-  if(eventType === "user.updated") {
+  if (eventType === "user.updated") {
     const { data } = evt;
 
-    await db.update(users).set({
-      name: `${data.first_name} ${data.last_name}`,
-      imageUrl: data.image_url,
-    }).where(eq(users.clerkId, data.id));
+    await db
+      .update(users)
+      .set({
+        name: `${data.first_name} ${data.last_name}`,
+        imageUrl: data.image_url,
+      })
+      .where(eq(users.clerkId, data.id));
   }
 
   return new Response("Webhook received", { status: 200 });

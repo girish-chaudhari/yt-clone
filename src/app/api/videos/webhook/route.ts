@@ -42,7 +42,7 @@ export const POST = async (request: Request) => {
     {
       "mux-signature": muxSignature,
     },
-    SIGNING_SECRET
+    SIGNING_SECRET,
   );
 
   switch (payload.type as WebhookEvent["type"]) {

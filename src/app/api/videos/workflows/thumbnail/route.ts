@@ -12,7 +12,7 @@ interface InputType {
 }
 
 export const { POST } = serve(async (context) => {
-  const utapi = new UTApi()
+  const utapi = new UTApi();
 
   const input = context.requestPayload as InputType;
   const { videoId, userId, prompt } = input;
@@ -44,7 +44,7 @@ export const { POST } = serve(async (context) => {
       headers: {
         authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
-    }
+    },
   );
 
   const tempThumbnailUrl = body.data?.[0].url;
@@ -54,29 +54,28 @@ export const { POST } = serve(async (context) => {
   }
 
   await context.run("cleanup-thumbnail", async () => {
-    if(video.thumbnailKey){
-      await utapi.deleteFiles(video.thumbnailKey)
+    if (video.thumbnailKey) {
+      await utapi.deleteFiles(video.thumbnailKey);
       await db
-      .update(videos)
-      .set({
-        thumbnailKey: null, thumbnailUrl: null
-      }).where(and(
-        eq(videos.id, videoId),
-        eq(videos.userId, userId)
-      ))
+        .update(videos)
+        .set({
+          thumbnailKey: null,
+          thumbnailUrl: null,
+        })
+        .where(and(eq(videos.id, videoId), eq(videos.userId, userId)));
     }
-  })
+  });
 
   const uploadedThumbnail = await context.run("upload-thumbnail", async () => {
-    const { data, } = await utapi.uploadFilesFromUrl(tempThumbnailUrl)
+    const { data } = await utapi.uploadFilesFromUrl(tempThumbnailUrl);
 
-    if(!data){
+    if (!data) {
       throw new Error("Bad request");
     }
 
-    return data
-  })
- 
+    return data;
+  });
+
   await context.run("update-video", async () => {
     await db
       .update(videos)
@@ -87,8 +86,8 @@ export const { POST } = serve(async (context) => {
       .where(
         and(
           eq(videos.id, video.id),
-          eq(videos.userId, video.userId) // Ensure the user owns the video
-        )
+          eq(videos.userId, video.userId), // Ensure the user owns the video
+        ),
       );
   });
 });

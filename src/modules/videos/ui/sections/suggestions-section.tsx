@@ -1,3 +1,3 @@
-export const SuggestionsSection = ( )=> {
- return <div>Suggestions</div>
-}
+export const SuggestionsSection = () => {
+  return <div>Suggestions</div>;
+};

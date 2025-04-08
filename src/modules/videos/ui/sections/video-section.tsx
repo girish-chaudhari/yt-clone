@@ -47,7 +47,7 @@ const VideoSectionSuspense = ({ videoId }: VideoSectionProps) => {
       <div
         className={cn(
           "aspect-video bg-black rounded-xl overflow-hidden relative",
-          video.muxStatus !== "ready" && "rounded-b-none"
+          video.muxStatus !== "ready" && "rounded-b-none",
         )}
       >
         <VideoPlayer

@@ -37,7 +37,7 @@ export const VideoDescription = ({
         <p
           className={cn(
             "text-sm whitespace-pre-wrap",
-            !isExpanded && "line-clamp-2"
+            !isExpanded && "line-clamp-2",
           )}
         >
           {description || "No description"}

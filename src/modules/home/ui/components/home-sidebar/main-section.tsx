@@ -42,7 +42,7 @@ export const MainSection = () => {
                     e.preventDefault();
                     return clerk.openSignIn();
                   }
-                }} 
+                }}
               >
                 <Link href={item.url} className="flex items-center gap-4">
                   <item.icon />

@@ -16,7 +16,7 @@ export const videoViewsRouter = createTRPCRouter({
         .select()
         .from(videoViews)
         .where(
-          and(eq(videoViews.videoId, videoId), eq(videoViews.userId, userId))
+          and(eq(videoViews.videoId, videoId), eq(videoViews.userId, userId)),
         );
       if (existingVideoView) {
         return existingVideoView;
