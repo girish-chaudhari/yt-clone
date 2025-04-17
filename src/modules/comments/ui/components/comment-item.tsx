@@ -120,7 +120,7 @@ export const CommentItem = ({
               >
                 <ThumbsUpIcon
                   className={cn(
-                    comment.viewerReaction === "like" && "fill-black"
+                    comment.viewerReaction === "like" && "fill-black",
                   )}
                 />
               </Button>
@@ -136,7 +136,7 @@ export const CommentItem = ({
               >
                 <ThumbsDownIcon
                   className={cn(
-                    comment.viewerReaction === "dislike" && "fill-black"
+                    comment.viewerReaction === "dislike" && "fill-black",
                   )}
                 />
               </Button>
@@ -156,27 +156,27 @@ export const CommentItem = ({
             )}
           </div>
         </div>
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-8">
-                <MoreVerticalIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setIsReplyOpen(true)}>
-                <MessageSquareIcon className="mr-2" />
-                Replay
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="size-8">
+              <MoreVerticalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setIsReplyOpen(true)}>
+              <MessageSquareIcon className="mr-2" />
+              Replay
+            </DropdownMenuItem>
+            {comment.user.clerkId === userId && (
+              <DropdownMenuItem
+                onClick={() => remove.mutate({ id: comment.id })}
+              >
+                <Trash2Icon />
+                Delete
               </DropdownMenuItem>
-              {comment.user.clerkId === userId && (
-                <DropdownMenuItem
-                  onClick={() => remove.mutate({ id: comment.id })}
-                >
-                  <Trash2Icon />
-                  Delete
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       {isReplyOpen && variant === "comment" && (
         <div className="mt-4 pl-14">

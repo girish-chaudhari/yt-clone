@@ -44,7 +44,8 @@ export const CommentForm = ({
         videoId,
       });
       utils.comments.getMany.invalidate({
-        videoId, parentId
+        videoId,
+        parentId,
       });
       form.reset();
       toast.success("Comment added");
@@ -96,7 +97,9 @@ export const CommentForm = ({
                 <FormControl>
                   <Textarea
                     placeholder={
-                      variant === "reply" ? "Reply to this comment..." : "Add a comment..."
+                      variant === "reply"
+                        ? "Reply to this comment..."
+                        : "Add a comment..."
                     }
                     className="resize-none bg-transparent overflow-hidden min-h-0"
                     {...field}
@@ -108,11 +111,7 @@ export const CommentForm = ({
           />
           <div className="justify-end gap-2 mt-2 flex">
             {onCancel && (
-              <Button
-                variant="ghost"
-                type="button"
-                onClick={handleCancel}
-              >
+              <Button variant="ghost" type="button" onClick={handleCancel}>
                 Cancel
               </Button>
             )}

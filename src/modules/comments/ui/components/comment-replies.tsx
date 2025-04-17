@@ -21,7 +21,7 @@ export const CommentReplies = ({ parentId, videoId }: CommentRepliesProps) => {
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
-      }
+      },
     );
   return (
     <div className="pl-14">

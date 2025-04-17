@@ -26,10 +26,12 @@ export const CommentsSection = ({ videoId }: CommentsSectionProps) => {
 };
 
 const CommentsSkeleton = () => {
-  return <div className="mt-6 flex justify-center items-center">
-    <Loader2Icon className="text-muted-foreground size-7 animated-spin" />
-  </div>
-}
+  return (
+    <div className="mt-6 flex justify-center items-center">
+      <Loader2Icon className="text-muted-foreground size-7 animated-spin" />
+    </div>
+  );
+};
 
 export const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
   const [comments, query] = trpc.comments.getMany.useSuspenseInfiniteQuery(
@@ -39,7 +41,7 @@ export const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
+    },
   );
   return (
     <div className="mt-6">
