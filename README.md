@@ -1,3 +1,5 @@
+# YouTube Clone
+
 ## Project Overview
 
 This project, a YouTube clone, is a modern web application built using Next.js. It aims to replicate core functionalities of YouTube, providing a robust foundation for creating scalable and high-performance video-sharing platforms. The application leverages the latest features and best practices of Next.js to ensure an optimal development experience and excellent user performance.
@@ -65,18 +67,6 @@ To get started with this project, follow these steps:
   ```bash
   npm start
   ```
-
-## Technologies Used
-
-This project is built using the following technologies:
-
-- **Next.js:** A React framework for production-grade web applications.
-- **React:** A JavaScript library for building user interfaces.
-- **TypeScript:** A superset of JavaScript for type-safe development.
-- **CSS/Sass:** For styling the application.
-- **Node.js:** For server-side rendering and API routes.
-
-These technologies ensure a modern, efficient, and scalable web application development process.
 
 ## Contributing
 
