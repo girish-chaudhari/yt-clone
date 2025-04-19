@@ -24,8 +24,8 @@ export const VideoInfoSkeleton = () => {
         <Skeleton className="h-5 w-[70%]" />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const VideoInfo = ({ data, onRemove }: VideoInfoProps) => {
   const compactViews = useMemo(() => {

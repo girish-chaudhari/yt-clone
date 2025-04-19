@@ -4,6 +4,7 @@ import { z } from "zod";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
+import { APP_URL } from "@/constants";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -161,11 +162,10 @@ export const FormSectionSuspese = ({ videoId }: FormSectionProps) => {
     },
   });
 
-
   const revalidate = trpc.videos.revalidate.useMutation({
     onSuccess: () => {
       utils.studio.getMany.invalidate();
-      utils.studio.getOne.invalidate({ id: videoId});
+      utils.studio.getOne.invalidate({ id: videoId });
       toast.success("Video revalidated");
     },
     onError: () => {
@@ -216,9 +216,7 @@ export const FormSectionSuspese = ({ videoId }: FormSectionProps) => {
   };
 
   // TODO: Change if deoploying outside of VERCEL
-  const fullUrl = `${
-    process.env.VERCEL_URL || "http://localhost:3000"
-  }/videos/${videoId}`;
+  const fullUrl = `${APP_URL || "http://localhost:3000"}/videos/${videoId}`;
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopy = async () => {

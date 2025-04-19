@@ -44,14 +44,14 @@ export const videosRouter = createTRPCRouter({
             type: videoReactions.type,
           })
           .from(videoReactions)
-          .where(inArray(videoReactions.userId, userId ? [userId] : []))
+          .where(inArray(videoReactions.userId, userId ? [userId] : [])),
       );
 
       const viewerSubsciptions = db.$with("viewer_subscriptions").as(
         db
           .select()
           .from(subscriptions)
-          .where(inArray(subscriptions.viewerId, userId ? [userId] : []))
+          .where(inArray(subscriptions.viewerId, userId ? [userId] : [])),
       );
 
       const [existingVideo] = await db
@@ -62,10 +62,10 @@ export const videosRouter = createTRPCRouter({
             ...getTableColumns(users),
             subscriberCount: db.$count(
               subscriptions,
-              eq(subscriptions.creatorId, users.id)
+              eq(subscriptions.creatorId, users.id),
             ),
             viewerSubscribed: isNotNull(viewerSubsciptions.viewerId).mapWith(
-              Boolean
+              Boolean,
             ),
           },
           viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
@@ -73,15 +73,15 @@ export const videosRouter = createTRPCRouter({
             videoReactions,
             and(
               eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.type, "like")
-            )
+              eq(videoReactions.type, "like"),
+            ),
           ),
           dislikeCount: db.$count(
             videoReactions,
             and(
               eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.type, "dislike")
-            )
+              eq(videoReactions.type, "dislike"),
+            ),
           ),
           viewerReaction: viewerReactions.type,
         })
@@ -90,7 +90,7 @@ export const videosRouter = createTRPCRouter({
         .leftJoin(viewerReactions, eq(viewerReactions.videoId, videos.id))
         .leftJoin(
           viewerSubsciptions,
-          eq(viewerSubsciptions.creatorId, users.id)
+          eq(viewerSubsciptions.creatorId, users.id),
         )
         .where(eq(videos.id, input.id));
       // .groupBy(videos.id, users.id, viewerReactions.type);
@@ -156,7 +156,7 @@ export const videosRouter = createTRPCRouter({
       }
 
       const directUpload = await mux.video.uploads.retrieve(
-        existingVideo.muxUploadId
+        existingVideo.muxUploadId,
       );
 
       if (!directUpload || !directUpload.asset_id) {
@@ -212,8 +212,8 @@ export const videosRouter = createTRPCRouter({
           .where(
             and(
               eq(videos.id, input.id),
-              eq(videos.userId, userId) // Ensure the user owns the video
-            )
+              eq(videos.userId, userId), // Ensure the user owns the video
+            ),
           );
       }
 

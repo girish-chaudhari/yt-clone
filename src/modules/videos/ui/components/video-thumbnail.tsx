@@ -17,8 +17,8 @@ export const VideoThumbnailSkeleton = () => {
     <div className="relative w-full overflow-hidden rounded-xl aspect-video">
       <Skeleton className="size-full" />
     </div>
-  )
-}
+  );
+};
 
 export const VideoThumbnail = ({
   title,

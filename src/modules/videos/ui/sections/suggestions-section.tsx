@@ -61,7 +61,7 @@ const SuggestionsSectionSuspense = ({
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
-      }
+      },
     );
 
   return (
@@ -70,14 +70,14 @@ const SuggestionsSectionSuspense = ({
         {suggestions.pages.flatMap((page) =>
           page.items.map((video) => (
             <VideoRowCard key={video.id} data={video} size="compact" />
-          ))
+          )),
         )}
       </div>
       <div className="block space-y-3 md:hidden">
         {suggestions.pages.flatMap((page) =>
           page.items.map((video) => (
             <VideoGridCard key={video.id} data={video} />
-          ))
+          )),
         )}
       </div>
       <InfiniteScroll
