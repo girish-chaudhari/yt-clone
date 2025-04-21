@@ -8,10 +8,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export const SearchInput = () => {
   const router = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const query = searchParams.get("query") || ""
-const categoryId = searchParams.get("categoryId") || ""
+  const query = searchParams.get("query") || "";
+  const categoryId = searchParams.get("categoryId") || "";
 
   const [value, setValue] = useState(query);
 
@@ -23,8 +23,8 @@ const categoryId = searchParams.get("categoryId") || ""
 
     url.searchParams.set("query", encodeURIComponent(newQuery));
 
-    if(categoryId){
-      url.searchParams.set("categoryId", categoryId)
+    if (categoryId) {
+      url.searchParams.set("categoryId", categoryId);
     }
 
     if (newQuery === "") {

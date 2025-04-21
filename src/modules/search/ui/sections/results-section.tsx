@@ -65,7 +65,7 @@ export const ResultsSectionSuspense = ({
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
+    },
   );
   return (
     <>
