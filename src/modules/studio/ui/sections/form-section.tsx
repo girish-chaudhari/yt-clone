@@ -215,8 +215,7 @@ export const FormSectionSuspese = ({ videoId }: FormSectionProps) => {
     update.mutate(data);
   };
 
-  // TODO: Change if deoploying outside of VERCEL
-  const fullUrl = `${APP_URL || "http://localhost:3000"}/videos/${videoId}`;
+  const fullUrl = `${APP_URL}/videos/${videoId}`;
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopy = async () => {
