@@ -26,9 +26,11 @@ export const playlistVideos = pgTable(
         onDelete: "cascade",
       })
       .notNull(),
-    videoId: uuid("video_id").references(() => videos.id, {
-      onDelete: "cascade",
-    }).notNull(),
+    videoId: uuid("video_id")
+      .references(() => videos.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -37,7 +39,7 @@ export const playlistVideos = pgTable(
       name: "playlist_videos_pk",
       columns: [t.playlistId, t.videoId],
     }),
-  ]
+  ],
 );
 
 export const playlistVideoRelations = relations(playlistVideos, ({ one }) => ({
@@ -50,7 +52,6 @@ export const playlistVideoRelations = relations(playlistVideos, ({ one }) => ({
     references: [videos.id],
   }),
 }));
-
 
 export const playlists = pgTable("playlists", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -71,7 +72,6 @@ export const playlistRelations = relations(playlists, ({ one, many }) => ({
   playlistVideos: many(playlistVideos),
 }));
 
-
 export const users = pgTable(
   "users",
   {
@@ -83,7 +83,7 @@ export const users = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("clerck_id_idx").on(t.clerkId)]
+  (t) => [uniqueIndex("clerck_id_idx").on(t.clerkId)],
 );
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -98,7 +98,7 @@ export const userRelations = relations(users, ({ many }) => ({
   }),
   comments: many(comments),
   commentReactions: many(commentReactions),
-  playlists: many(playlists)
+  playlists: many(playlists),
 }));
 
 export const subscriptions = pgTable(
@@ -119,7 +119,7 @@ export const subscriptions = pgTable(
       name: "subscriptions_pk",
       columns: [t.viewerId, t.creatorId],
     }),
-  ]
+  ],
 );
 
 export const subscriptionRelations = relations(subscriptions, ({ one }) => ({
@@ -144,7 +144,7 @@ export const categories = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("name_idx").on(t.name)]
+  (t) => [uniqueIndex("name_idx").on(t.name)],
 );
 
 export const categoryRelations = relations(users, ({ many }) => ({
@@ -200,7 +200,7 @@ export const videoRelations = relations(videos, ({ one, many }) => ({
   views: many(videoViews),
   reactions: many(videoReactions),
   comments: many(comments),
-  playlistsVideos: many(playlistVideos)
+  playlistsVideos: many(playlistVideos),
 }));
 
 export const comments = pgTable(
@@ -226,7 +226,7 @@ export const comments = pgTable(
         name: "comments_parent_id_fkey",
       }).onDelete("cascade"),
     ];
-  }
+  },
 );
 
 export const commentRelations = relations(comments, ({ one, many }) => ({
@@ -271,7 +271,7 @@ export const commentReactions = pgTable(
       name: "comment_reactions_pk",
       columns: [t.userId, t.commentId],
     }),
-  ]
+  ],
 );
 
 export const commentReactionRelations = relations(
@@ -285,7 +285,7 @@ export const commentReactionRelations = relations(
       fields: [commentReactions.commentId],
       references: [comments.id],
     }),
-  })
+  }),
 );
 
 export const videoViews = pgTable(
@@ -305,7 +305,7 @@ export const videoViews = pgTable(
       name: "video_views_pk",
       columns: [t.userId, t.videoId],
     }),
-  ]
+  ],
 );
 
 export const videoViewRelations = relations(videoViews, ({ one }) => ({
@@ -341,7 +341,7 @@ export const videoReactions = pgTable(
       name: "video_reactions_pk",
       columns: [t.userId, t.videoId],
     }),
-  ]
+  ],
 );
 
 export const videoReactionRelations = relations(videoReactions, ({ one }) => ({
