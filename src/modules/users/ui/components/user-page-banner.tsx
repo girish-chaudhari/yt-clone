@@ -11,10 +11,8 @@ interface UserPageBannerProps {
 }
 
 export const UserPageBannerSkeleton = () => {
-  return (
-    <Skeleton className="w-full max-h-[200px] h-[15vh] md:h-[25vh]" />
-  )
-}
+  return <Skeleton className="w-full max-h-[200px] h-[15vh] md:h-[25vh]" />;
+};
 
 const UserPageBanner = ({ user }: UserPageBannerProps) => {
   const { userId } = useAuth();
@@ -24,7 +22,7 @@ const UserPageBanner = ({ user }: UserPageBannerProps) => {
       <div
         className={cn(
           "w-full max-h-[200px] h-[15vh] md:h-[25vh] bg-gradient-to-r from-gray-200 rounded-xl",
-          user.bannerUrl ? "bg-cover bg-center" : "bg-gray-100"
+          user.bannerUrl ? "bg-cover bg-center" : "bg-gray-100",
         )}
         style={{
           backgroundImage: user.bannerUrl

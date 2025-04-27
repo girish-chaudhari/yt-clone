@@ -27,7 +27,7 @@ export const usersRouter = createTRPCRouter({
         db
           .select()
           .from(subscriptions)
-          .where(inArray(subscriptions.viewerId, userId ? [userId] : []))
+          .where(inArray(subscriptions.viewerId, userId ? [userId] : [])),
       );
 
       const [existingUser] = await db
@@ -35,15 +35,18 @@ export const usersRouter = createTRPCRouter({
         .select({
           ...getTableColumns(users),
           viewerSubscribed: isNotNull(viewerSubsciptions.viewerId).mapWith(
-            Boolean
+            Boolean,
           ),
           videoCount: db.$count(videos, eq(videos.userId, user.id)),
-          subscriberCount: db.$count(subscriptions, eq(subscriptions.creatorId, user.id))
+          subscriberCount: db.$count(
+            subscriptions,
+            eq(subscriptions.creatorId, users.id),
+          ),
         })
         .from(users)
         .leftJoin(
           viewerSubsciptions,
-          eq(viewerSubsciptions.creatorId, users.id)
+          eq(viewerSubsciptions.creatorId, users.id),
         )
         .where(eq(users.id, input.id));
 
