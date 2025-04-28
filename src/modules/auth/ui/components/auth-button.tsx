@@ -26,7 +26,6 @@ export const AuthButton = () => {
             <UserButton.Action label="manageAccount" />
           </UserButton.MenuItems>
         </UserButton>
-        {/* TODO: Add menu items for studio and User profile */}
       </SignedIn>
       <SignedOut>
         <SignInButton mode="modal">
