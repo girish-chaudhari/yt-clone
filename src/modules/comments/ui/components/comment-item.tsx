@@ -60,7 +60,7 @@ export const CommentItem = ({
     },
   });
 
-  const like = trpc.commentReactions.like.useMutation({
+  const like = trpc.commentReaction.like.useMutation({
     onSuccess: () => {
       utils.comments.getMany.invalidate({ videoId: comment.videoId });
     },
@@ -72,7 +72,7 @@ export const CommentItem = ({
       }
     },
   });
-  const dislike = trpc.commentReactions.dislike.useMutation({
+  const dislike = trpc.commentReaction.dislike.useMutation({
     onSuccess: () => {
       utils.comments.getMany.invalidate({ videoId: comment.videoId });
     },
@@ -88,7 +88,7 @@ export const CommentItem = ({
   return (
     <div>
       <div className="flex gap-4">
-        <Link href={`/users/${comment.userId}`}>
+        <Link prefetch href={`/users/${comment.userId}`}>
           <UserAvatar
             size={variant === "comment" ? "lg" : "sm"}
             imageUrl={comment.user.imageUrl}
@@ -96,7 +96,7 @@ export const CommentItem = ({
           />
         </Link>
         <div className="flex-1 min-w-0">
-          <Link href={`/users/${comment.userId}`}>
+          <Link prefetch href={`/users/${comment.userId}`}>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-sm font-medium pb-0.5">
                 {comment.user.name}
