@@ -51,8 +51,6 @@ export const UserPageInfo = ({ user }: UserPageInfoProps) => {
     isSubscribed: user.viewerSubscribed,
   });
 
-  console.log(user);
-
   return (
     <div className="py-6">
       {/* Mobile layout */}
